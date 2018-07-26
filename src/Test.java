@@ -24,6 +24,7 @@ public class Test {
         list.remove(3.5);
         System.out.println(list.get(3));
         System.out.println(list.getSize());
-        System.out.println(list.toString());
+        System.out.println(list.toStringRec());
+        System.out.println(list.getRec(3));
     }
 }

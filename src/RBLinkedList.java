@@ -4,6 +4,7 @@ public class RBLinkedList<R> {
     private Node<R> first;
     private Node<R> last;
     private int size;
+    private int i = 0;
 
     @Override
     public String toString() {
@@ -18,6 +19,16 @@ public class RBLinkedList<R> {
             tmp = tmp.next;
         }
         return sb.deleteCharAt(sb.length() - 2).append("]").toString();
+    }
+
+    public String toStringRec() {
+        Node tmp = first;
+        String str = "[ ";
+        return recToString(tmp, str, i);
+    }
+
+    private String recToString(Node current, String str, int i) {
+        return i != size ? recToString(current.next, str + current.value + ", ", ++i) : new StringBuilder(str).deleteCharAt(str.length() - 2).append("]").toString();
     }
 
     public void remove(int index) {
@@ -59,6 +70,18 @@ public class RBLinkedList<R> {
             tmp = tmp.next;
         }
         return null;
+    }
+
+    public R getRec(int index) {
+        if (index > size) {
+            throw new IndexOutOfBoundsException();
+        }
+        Node<R> tmp = first;
+        return recGet(tmp, index, ++i);
+    }
+
+    private R recGet(Node<R> current, int index, int i) {
+        return index != i ? recGet(current.next, index, ++i) : current.value;
     }
 
     public void set(int index, R value) {
