@@ -14,17 +14,12 @@ public class Test {
         list.prepend(0);
         list.add(3, 3.5);
 
-        System.out.println(list.toString());
-        /*System.out.println(list.get(2));
-        list.set(2, -2);
-        System.out.println(list.get(2));
-        System.out.println();*/
+
         System.out.println();
-        list.remove(5);
-        list.remove(3.5);
-        System.out.println(list.get(3));
         System.out.println(list.getSize());
         System.out.println(list.toStringRec());
         System.out.println(list.getRec(3));
+        System.out.println(list.toStringRec());
+        System.out.println(list.toStringRec());
     }
 }

@@ -6,21 +6,6 @@ public class RBLinkedList<R> {
     private int size;
     private int i = 0;
 
-    @Override
-    public String toString() {
-        Node tmp = first;
-        StringBuilder sb = new StringBuilder();
-        sb.append("[ ");
-
-        for (int i = 0; i < size; i++) {
-            if (tmp.value != null) {
-                sb = sb.append(tmp.getValue()).append(", ");
-            }
-            tmp = tmp.next;
-        }
-        return sb.deleteCharAt(sb.length() - 2).append("]").toString();
-    }
-
     public String toStringRec() {
         Node tmp = first;
         String str = "[ ";
@@ -58,20 +43,6 @@ public class RBLinkedList<R> {
         }
     }
 
-    public R get(int index) {
-        if (index > size) {
-            throw new IndexOutOfBoundsException();
-        }
-        Node<R> tmp = first;
-        for (int i = 1; i <= size; i++) {
-            if (index == i) {
-                return tmp.value;
-            }
-            tmp = tmp.next;
-        }
-        return null;
-    }
-
     public R getRec(int index) {
         if (index > size) {
             throw new IndexOutOfBoundsException();
@@ -84,20 +55,7 @@ public class RBLinkedList<R> {
         return index != i ? recGet(current.next, index, ++i) : current.value;
     }
 
-    public void set(int index, R value) {
-        if (index == size + 1) {
-            add(value);
-        } else if (index > size + 1) {
-            throw new IndexOutOfBoundsException();
-        }
-        Node<R> tmp = first;
-        for (int i = 1; i <= size; i++) {
-            if (index == i) {
-                tmp.setValue(value);
-            }
-            tmp = tmp.next;
-        }
-    }
+    
 
     public void add(int index, R value) {
         if (index == size + 1) {
