@@ -13,10 +13,10 @@ public class Test {
         list.add(1, 3.5);
 
         System.out.println();
-        System.out.println(list.toStringRec());
+        System.out.println(list.toString());
         //list.removeByIndex(1);
         list.set(6, -9);
-        System.out.println(list.toStringRec());
+        System.out.println(list.toString());
         System.out.println(list.get(6));
 
 

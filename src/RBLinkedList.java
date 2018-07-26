@@ -6,7 +6,7 @@ public class RBLinkedList<R> {
     private int size;
     private int i = 0;
 
-    public String toStringRec() {
+    public String toString() {
         Node tmp = first;
         String str = "[ ";
         return recToString(tmp, str, i);
