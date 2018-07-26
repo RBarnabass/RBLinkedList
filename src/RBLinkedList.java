@@ -4,62 +4,57 @@ public class RBLinkedList<R> {
     private Node<R> first;
     private Node<R> last;
     private int size;
+    private int i = 0;
 
-    @Override
-    public String toString() {
+    public String toStringRec() {
         Node tmp = first;
-        StringBuilder sb = new StringBuilder();
-        sb.append("[ ");
-
-        for (int i = 0; i < size; i++) {
-            if (tmp.value != null) {
-                sb = sb.append(tmp.getValue()).append(", ");
-            }
-            tmp = tmp.next;
-        }
-        return sb.deleteCharAt(sb.length() - 2).append("]").toString();
+        String str = "[ ";
+        return recToString(tmp, str, i);
     }
 
-    public void remove(int index) {
+    private String recToString(Node current, String str, int i) {
+        return i != size ? recToString(current.next, str + current.value + ", ", ++i) : new StringBuilder(str).deleteCharAt(str.length() - 2).append("]").toString();
+    }
+
+    public void removeByIndex(int index) {
         if (index > size) {
             throw new IndexOutOfBoundsException();
         }
-        Node<R> tmp = first;
-        for (int i = 1; i <= size; i++) {
-            if (index == i) {
-                tmp.previous.setNext(tmp.next);
-                tmp.next.setPrevious(tmp.previous);
-                size--;
-            }
-            tmp = tmp.next;
+       delete(removeByIndexRec(first, index, i + 1));
+    }
+
+    private Node<R> removeByIndexRec(Node<R> current, int index, int i) {
+        return index == i ? current : removeByIndexRec(current.next, index, ++i);
+    }
+
+    public void removeByValue(R value) {
+       removeByValueRec(first, value);
+    }
+
+    private void removeByValueRec(Node<R> current, R value) {
+        if (current.value.equals(value)) {
+            delete(current);
+        } else {
+            removeByValueRec(current.next, value);
         }
     }
 
-    public void remove(R value) {
-        Node<R> tmp = first;
-        for (int i = 1; i <= size; i++) {
-            if (tmp.getValue().equals(value)) {
-                tmp.previous.setNext(tmp.next);
-                tmp.next.setPrevious(tmp.previous);
-                size--;
-            }
-            tmp = tmp.next;
+    private void delete(Node<R> trash) {
+        if (trash.previous == null) {
+            first = trash.next;
+        } else {
+            trash.previous.setNext(trash.next);
+            trash.previous = null;
         }
-    }
-
-    public R get(int index) {
-        if (index > size) {
-            throw new IndexOutOfBoundsException();
+        if (trash.next == null) {
+            last = trash.previous;
+        } else {
+            trash.next.setPrevious(trash.previous);
+            trash.next = null;
         }
-        Node<R> tmp = first;
-        for (int i = 1; i <= size; i++) {
-            if (index == i) {
-                return tmp.value;
-            }
-            tmp = tmp.next;
+        trash.value = null;
+        size--;
         }
-        return null;
-    }
 
     public void set(int index, R value) {
         if (index == size + 1) {
@@ -67,36 +62,42 @@ public class RBLinkedList<R> {
         } else if (index > size + 1) {
             throw new IndexOutOfBoundsException();
         }
-        Node<R> tmp = first;
-        for (int i = 1; i <= size; i++) {
-            if (index == i) {
-                tmp.setValue(value);
-            }
-            tmp = tmp.next;
-        }
+        removeByIndexRec(first, index, i + 1).setValue(value);
     }
 
-    public void add(int index, R value) {
-        if (index == size + 1) {
-            add(value);
-        } else if (index > size + 1) {
+    public R get(int index) {
+        if (index > size) {
             throw new IndexOutOfBoundsException();
         }
         Node<R> tmp = first;
-        if (index == size) {
+        return getRec(tmp, index, ++i);
+    }
+
+    private R getRec(Node<R> current, int index, int i) {
+        return index != i ? getRec(current.next, index, ++i) : current.value;
+    }
+
+    public void add(int index, R value) {
+         if (index > size || index < 1) {
+            throw new IndexOutOfBoundsException();
+        }
+        Node<R> node = new Node<>();
+        Node<R> tmp = addRec(first, index, i + 1);
+        if (tmp.previous == null) {
+            prepend(value);
+        } else if (tmp.next == null || index == size) {
             add(value);
         } else {
-            for (int i = 1; i < size; i++) {
-                if (i == index) {
-                    Node<R> node = new Node<>(tmp, tmp.previous, value);
-                    tmp.setPrevious(node);
-                    node.previous.setNext(node);
-                    size++;
-                    return;
-                }
-                tmp = tmp.next;
-            }
+            tmp.previous.setNext(node);
+            tmp.setPrevious(node);
+            node.setNext(tmp);
+            node.setValue(value);
+            size++;
         }
+    }
+
+    private Node<R> addRec(Node<R> current, int index, int i) {
+        return index != i ? addRec(current.next, index, ++i) : current;
     }
 
     public void prepend(R value) {
