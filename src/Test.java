@@ -5,21 +5,20 @@ public class Test {
 
 
         RBLinkedList list = new RBLinkedList();
-        list.add(1);
-        list.add(2);
-        list.add(3);
-        list.add(4);
-        list.prepend(0);
-        list.add(1, 3.5);
+        list.add(10);
+        list.add(20);
+        list.add(30);
+        list.add(40);
+        list.prepend(-10);
+        list.insert(1,0);
+        list.set(3,5);
 
+        System.out.println(list.toString());
         System.out.println();
+        //System.out.println(list.get(0));
+        //list.removeByValue(0);
+        list.removeByIndex(0);
         System.out.println(list.toString());
-        //list.removeByIndex(1);
-        list.set(6, -9);
-        System.out.println(list.toString());
-        System.out.println(list.get(6));
-
-
 
     }
 }
